@@ -148,6 +148,16 @@ $ python -m src.cli "Hemos cocinado pollo y el termómetro marca 60 °C en el ce
 
 ---
 
+## Despliegue
+
+La app incluye un [`Dockerfile`](Dockerfile) y un [`render.yaml`](render.yaml) listos para
+desplegar en Render o Koyeb. La base vectorial se construye dentro de la imagen. Instrucciones
+paso a paso en [`docs/despliegue.md`](docs/despliegue.md).
+
+> URL pública del despliegue: _(añadir tras desplegar)_
+
+---
+
 ## Capturas / Demo
 
 **Veredicto que CUMPLE** (congelador a −20 °C):

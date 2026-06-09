@@ -14,6 +14,7 @@ Luego abre http://localhost:8080 en el navegador.
 """
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
@@ -209,4 +210,11 @@ def pagina_principal() -> None:
         boton.on_click(verificar)
 
 
-ui.run(title="Centinela APPCC", favicon="🛡️", reload=False, port=8080)
+# El puerto lo fija la plataforma de despliegue (variable PORT); en local, 8080.
+ui.run(
+    title="Centinela APPCC",
+    favicon="🛡️",
+    reload=False,
+    host="0.0.0.0",
+    port=int(os.getenv("PORT", "8080")),
+)

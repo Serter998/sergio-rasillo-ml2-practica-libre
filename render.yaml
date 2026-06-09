@@ -1,0 +1,15 @@
+# Blueprint de Render (https://render.com) para desplegar Centinela APPCC con Docker.
+# Importa este repositorio en Render como "Blueprint" y rellena OPENROUTER_API_KEY.
+services:
+  - type: web
+    name: centinela-appcc
+    runtime: docker
+    plan: free
+    autoDeploy: true
+    envVars:
+      # Pega tu clave en el panel de Render (no se versiona).
+      - key: OPENROUTER_API_KEY
+        sync: false
+      # Modelo de embeddings ligero para el entorno de despliegue.
+      - key: EMBEDDING_MODEL
+        value: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2

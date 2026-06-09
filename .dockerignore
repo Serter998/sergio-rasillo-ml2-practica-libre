@@ -1,0 +1,15 @@
+# No copiar al contexto de build lo que no hace falta o se regenera.
+.venv/
+venv/
+.git/
+.claude/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+# La base vectorial se reconstruye dentro de la imagen (RUN python -m src.ingesta).
+vectorstore/
+chroma_db/
+# Secretos y cachés locales.
+.env
+.cache/
+models/
