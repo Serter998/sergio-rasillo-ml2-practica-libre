@@ -245,7 +245,7 @@ progresivo por fases, no un único bloque generado.
 
 ## Autor
 
-- **Sergio Rasillo** _(confirmar nombre completo)_
+- **Sergio Rasillo Flores**
 
 ---
 
