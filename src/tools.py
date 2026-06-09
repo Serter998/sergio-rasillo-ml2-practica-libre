@@ -156,8 +156,13 @@ TOOLS_SCHEMA = [
                         "type": "string",
                         "enum": list(UMBRALES_TEMPERATURA.keys()),
                         "description": (
-                            "Operación: 'refrigeracion' (≤4 °C), 'congelacion' (≤−18 °C), "
-                            "'cocinado' (núcleo ≥75 °C) o 'mantenimiento_caliente' (≥65 °C)."
+                            "Operación a evaluar. "
+                            "'cocinado': cocción de un alimento; temperatura en el núcleo AL "
+                            "COCINARLO (asar, freír, hornear), mínimo 75 °C — úsalo cuando se "
+                            "acaba de cocinar. "
+                            "'mantenimiento_caliente': conservar en caliente un alimento YA "
+                            "cocinado hasta servirlo, mínimo 65 °C. "
+                            "'refrigeracion': máximo 4 °C. 'congelacion': máximo −18 °C."
                         ),
                     },
                 },
