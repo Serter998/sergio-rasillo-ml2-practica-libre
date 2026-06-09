@@ -1,0 +1,15 @@
+# ── Acceso al LLM vía OpenRouter (cliente OpenAI-compatible) ──────
+openai>=1.40.0
+
+# ── RAG: base vectorial local + embeddings locales ───────────────
+chromadb>=0.5.0
+sentence-transformers>=3.0.0
+
+# ── Validación de la salida estructurada (veredicto) ─────────────
+pydantic>=2.0.0
+
+# ── Carga de variables de entorno desde .env ─────────────────────
+python-dotenv>=1.0.0
+
+# ── Interfaz web tipo panel de inspección (Fase 3) ───────────────
+nicegui>=2.0.0

@@ -1,0 +1,29 @@
+# ── Credenciales (NUNCA subir) ────────────────────────────────────
+.env
+
+# ── Entorno virtual ───────────────────────────────────────────────
+.venv/
+venv/
+
+# ── Base vectorial local (se regenera con la ingesta) ─────────────
+vectorstore/
+chroma_db/
+
+# ── Caché de Python ───────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# ── Modelos de embeddings descargados (caché de HuggingFace) ──────
+.cache/
+models/
+
+# ── Configuración de Claude Code / worktrees (no forma parte del proyecto) ─
+.claude/
+
+# ── Sistema operativo / editor ────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
