@@ -12,6 +12,9 @@ de origen), los **incumplimientos detectados** y las **acciones correctivas**.
 > deterministas** que el LLM decide invocar. El veredicto se apoya en datos fiables, no en
 > alucinación.
 
+**🌐 Demo en vivo:** https://centinela-appcc.onrender.com
+*(plan gratuito; el primer acceso puede tardar unos segundos por el arranque en frío)*
+
 ---
 
 ## Unidades del curso aplicadas
@@ -154,7 +157,9 @@ La app incluye un [`Dockerfile`](Dockerfile) y un [`render.yaml`](render.yaml) l
 desplegar en Render o Koyeb. La base vectorial se construye dentro de la imagen. Instrucciones
 paso a paso en [`docs/despliegue.md`](docs/despliegue.md).
 
-> URL pública del despliegue: _(añadir tras desplegar)_
+> 🌐 **Desplegado en:** https://centinela-appcc.onrender.com
+> _(plan gratuito de Render: el primer acceso tras un periodo de inactividad puede tardar unos
+> segundos por el arranque en frío del contenedor)._
 
 ---
 
