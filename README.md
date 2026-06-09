@@ -160,6 +160,10 @@ paso a paso en [`docs/despliegue.md`](docs/despliegue.md).
 
 ## Capturas / Demo
 
+**Panel de inspección** (estado inicial, sin chat):
+
+![Interfaz del panel de inspección](docs/capturas/interfaz-web.png)
+
 **Veredicto que CUMPLE** (congelador a −20 °C):
 
 ![Veredicto cumple](docs/capturas/01_veredicto_cumple.png)
