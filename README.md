@@ -29,9 +29,11 @@ de origen), los **incumplimientos detectados** y las **acciones correctivas**.
   resultados numéricos fiables sobre los que se construye el veredicto.
 - **U5 — RAG y Bases Vectoriales:** ingesta del corpus → chunking → embeddings locales →
   base vectorial (ChromaDB) → recuperación semántica top-k de la normativa aplicable.
-- **U6 — MCP _(opcional)_:** exposición de la verificación como servidor MCP con una tool.
+- **U6 — MCP (Model Context Protocol):** servidor MCP ([`src/mcp_server.py`](src/mcp_server.py))
+  que expone dos tools, `buscar_normativa` y `verificar_cumplimiento`, para que cualquier
+  cliente MCP (p. ej. Claude Desktop) use el verificador. Ver [`docs/mcp.md`](docs/mcp.md).
 
-> **Cobertura:** 5 unidades (U1–U5), con U6 como ampliación opcional.
+> **Cobertura: las 6 unidades del curso (U1–U6).**
 
 ---
 
@@ -75,6 +77,7 @@ _(Diagrama detallado y capturas en la sección «Capturas / Demo».)_
 - **ChromaDB** como base vectorial local persistente.
 - **Pydantic** para validar el veredicto estructurado.
 - **NiceGUI** para la interfaz tipo panel de inspección.
+- **MCP (Model Context Protocol)** para exponer el verificador como servidor de tools.
 
 ---
 
@@ -120,6 +123,9 @@ python -m src.cli
 
 # Lanzar la interfaz web tipo panel de inspección (requiere OPENROUTER_API_KEY)
 python -m src.app          # abre http://localhost:8080
+
+# Lanzar el servidor MCP (U6) para clientes como Claude Desktop (ver docs/mcp.md)
+python -m src.mcp_server
 ```
 
 **Ejemplo de salida por consola:**

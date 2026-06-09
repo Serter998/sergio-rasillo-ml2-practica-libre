@@ -13,3 +13,6 @@ python-dotenv>=1.0.0
 
 # ── Interfaz web tipo panel de inspección (Fase 3) ───────────────
 nicegui>=2.0.0
+
+# ── Servidor MCP (Fase 4 — U6, opcional) ─────────────────────────
+mcp>=1.2.0

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "centinela-appcc": {
+      "command": "C:\\ruta\\al\\proyecto\\ml2-practica-libre\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "src.mcp_server"],
+      "cwd": "C:\\ruta\\al\\proyecto\\ml2-practica-libre",
+      "env": {
+        "OPENROUTER_API_KEY": "sk-or-v1-tu-clave"
+      }
+    }
+  }
+}
