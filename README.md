@@ -143,10 +143,17 @@ _(Ejemplos concretos de entrada/salida se añaden a medida que avanzan las fases
 - **Temperatura:** `0.1` — dominio de cumplimiento ⇒ se prioriza la consistencia y se
   minimiza la alucinación.
 - **Embeddings locales** (no se usa OpenRouter para embeddings, que no ofrece un endpoint
-  fiable): `intfloat/multilingual-e5-base`. _(Justificación detallada en Fase 1.)_
+  fiable): `intfloat/multilingual-e5-base`. Buen rendimiento multilingüe en español y corre
+  en CPU sin coste. Se aplican los prefijos `query:`/`passage:` que el modelo espera.
 - **Vector store:** ChromaDB — guarda metadatos (documento de origen, dominio, sección)
-  junto al vector, imprescindible para **citar la fuente** en el veredicto.
-- **Chunking / k:** _(valores definitivos y justificación en Fase 1.)_
+  junto al vector, imprescindible para **citar la fuente** en el veredicto. Distancia coseno
+  sobre embeddings normalizados.
+- **Chunking:** troceado *consciente de encabezados* (cada sección `##` es una unidad),
+  con subdivisión en ventanas de **600 caracteres** y **100 de solape** para las secciones
+  largas. Así cada umbral/criterio queda íntegro y la cita sale limpia (44 chunks en total).
+- **k = 4** en la recuperación: suficiente para traer 2-4 criterios aplicables sin meter
+  ruido. En las pruebas, las consultas relevantes recuperan los fragmentos correctos con
+  similitudes de 0.82–0.89.
 - **Dificultades encontradas:** _(se documentan a medida que aparecen.)_
 
 ### Apoyo de herramientas de IA
