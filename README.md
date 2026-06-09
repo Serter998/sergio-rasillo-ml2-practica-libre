@@ -119,29 +119,55 @@ python scripts\probar_retrieval.py "carne de pollo cocinada a 60 grados en el ce
 python -m src.cli
 
 # Lanzar la interfaz web tipo panel de inspección (requiere OPENROUTER_API_KEY)
-python -m src.app
+python -m src.app          # abre http://localhost:8080
 ```
 
-_(Ejemplos concretos de entrada/salida se añaden a medida que avanzan las fases.)_
+**Ejemplo de salida por consola:**
+
+```text
+$ python -m src.cli "Hemos cocinado pollo y el termómetro marca 60 °C en el centro"
+
+══════════════════════════════════════════════════════════════════════
+  VEREDICTO:  🔴 NO CUMPLE
+══════════════════════════════════════════════════════════════════════
+▶ Resumen
+  La pechuga de pollo alcanzó solo 60 °C, por debajo del mínimo de 75 °C.
+▶ Comprobaciones (herramientas deterministas)
+  ✗ [comprobar_temperatura] 60 °C NO CUMPLE el umbral de cocinado en núcleo (≥ 75 °C).
+▶ Acciones correctivas
+  → Continuar la cocción hasta que el centro alcance al menos 75 °C antes de servir.
+▶ Normas citadas
+  «Control de temperaturas y tiempos» › Cocinado
+```
 
 ---
 
 ## Capturas / Demo
 
-> _Mínimo 3 capturas que demuestren funcionalidad real (pendiente de Fase 3)._
+**Veredicto que CUMPLE** (congelador a −20 °C):
 
-1. _(hueco)_ Panel de inspección con un veredicto **🟢 cumple**. → `docs/capturas/01_veredicto_cumple.png`
-2. _(hueco)_ Veredicto **🔴 no cumple** con incumplimientos y acciones correctivas. → `docs/capturas/02_veredicto_no_cumple.png`
-3. _(hueco)_ Sección de **normas citadas** mostrando el documento de origen. → `docs/capturas/03_citas.png`
+![Veredicto cumple](docs/capturas/01_veredicto_cumple.png)
+
+**Veredicto que NO CUMPLE** con incumplimientos y acciones correctivas (tarta de nata 3 h a 22 °C):
+
+![Veredicto no cumple](docs/capturas/02_veredicto_no_cumple.png)
+
+**Normas citadas** con su documento de origen (alérgenos de un plato):
+
+![Normas citadas](docs/capturas/03_citas.png)
 
 ---
 
 ## Decisiones técnicas
 
-- **Modelo LLM:** `openai/gpt-oss-120b:free` vía OpenRouter. _(Justificación: gratuito,
-  buen soporte de function calling y de español. Pendiente de validar en Fase 2.)_
+- **Modelo LLM:** `openai/gpt-oss-120b:free` vía OpenRouter. Es **gratuito** (sin coste ni
+  tarjeta), tiene buen soporte de *function calling* —imprescindible para U4— y responde con
+  solvencia en español. Se validó en la práctica que invoca correctamente las tres tools
+  deterministas. Como el *tier* gratuito impone límites de tasa, el cliente añade reintentos
+  con backoff exponencial. Alternativas también gratuitas y configurables en `.env`:
+  `openai/gpt-oss-20b:free`, `google/gemini-2.0-flash-exp:free`.
 - **Temperatura:** `0.1` — dominio de cumplimiento ⇒ se prioriza la consistencia y se
-  minimiza la alucinación.
+  minimiza la alucinación; no se usa 0 para permitir una redacción natural del veredicto.
 - **Embeddings locales** (no se usa OpenRouter para embeddings, que no ofrece un endpoint
   fiable): `intfloat/multilingual-e5-base`. Buen rendimiento multilingüe en español y corre
   en CPU sin coste. Se aplican los prefijos `query:`/`passage:` que el modelo espera.
@@ -154,18 +180,46 @@ _(Ejemplos concretos de entrada/salida se añaden a medida que avanzan las fases
 - **k = 4** en la recuperación: suficiente para traer 2-4 criterios aplicables sin meter
   ruido. En las pruebas, las consultas relevantes recuperan los fragmentos correctos con
   similitudes de 0.82–0.89.
-- **Dificultades encontradas:** _(se documentan a medida que aparecen.)_
+- **Dificultades encontradas y cómo se resolvieron:**
+  - *Salida en consola de Windows:* la consola usa `cp1252` y reventaba al imprimir `≤`, `°`
+    o emojis (`UnicodeEncodeError`). Solución: forzar `sys.stdout.reconfigure(encoding="utf-8")`
+    en los puntos de entrada.
+  - *Detección de alérgenos con plurales:* el matcher con `\bgamba\b` no reconocía «gambas».
+    Solución: regex con sufijo plural opcional (`\b…s?\b`) y variantes de género.
+  - *Elección de la tool:* el modelo a veces no invocaba `buscar_alergeno` o confundía
+    «cocinado» (≥75 °C) con «mantenimiento en caliente» (≥65 °C). Solución: reforzar el system
+    prompt para obligar al uso de tools y afinar las descripciones de los parámetros.
+  - *JSON del modelo no siempre limpio:* se extrae el primer objeto JSON de forma tolerante,
+    con un reintento de reparación y, en último caso, degradación a «requiere_atención» sin
+    romper la aplicación.
+  - *Límites de tasa del modelo gratuito:* reintentos con backoff exponencial en el cliente.
 
 ### Apoyo de herramientas de IA
 
-_(Se detalla qué partes se apoyaron en IA y qué se ajustó manualmente.)_
+El proyecto se desarrolló mediante **programación asistida con Claude (Anthropic), usando
+Claude Code**. La asistencia de IA se empleó para generar el grueso del código de los módulos
+(`ingesta`, `rag`, `tools`, `llm`, `veredicto`, `cli`, `app`), el corpus didáctico y el
+borrador del README. El autor definió el **concepto y la arquitectura**, tomó las
+**decisiones técnicas** (modelo, temperatura, embeddings, chunking, *k*, stack sin LangChain),
+**revisó y validó cada fase** probando escenarios reales, e introdujo **ajustes manuales**:
+corrección de los bugs descritos arriba, refinamiento de prompts y de umbrales, y verificación
+de que las citas y los veredictos eran correctos. El historial de commits refleja el trabajo
+progresivo por fases, no un único bloque generado.
 
 ---
 
 ## Posibles mejoras
 
-1. _(pendiente — mínimo 2)_
-2. _(pendiente)_
+1. **Modo checklist estructurado:** un formulario con campos numéricos por punto de control
+   (temperaturas, tiempos) que alimente las tools directamente, sin depender de que el LLM
+   extraiga los números del texto libre.
+2. **Recuperación híbrida y filtrada por dominio:** combinar búsqueda léxica (BM25) con la
+   vectorial y filtrar por el dominio detectado en la clasificación, para citas aún más
+   precisas sobre un corpus mayor.
+3. **Exportar el veredicto a un registro APPCC en PDF** con fecha y firma, para trazabilidad
+   documental de las verificaciones.
+4. **Conjunto de evaluación automática:** una batería de escenarios con su veredicto esperado
+   para medir objetivamente la precisión del sistema ante cambios de modelo o de prompts.
 
 ---
 
