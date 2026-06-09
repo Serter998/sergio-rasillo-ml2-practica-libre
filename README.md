@@ -88,8 +88,8 @@ _(Diagrama detallado y capturas en la sección «Capturas / Demo».)_
 
 ```powershell
 # 1) Clonar el repositorio
-git clone <URL-del-repo>
-cd ml2-practica-libre
+git clone https://github.com/Serter998/sergio-rasillo-ml2-practica-libre.git
+cd sergio-rasillo-ml2-practica-libre
 
 # 2) Crear y activar el entorno virtual
 py -3.13 -m venv .venv
